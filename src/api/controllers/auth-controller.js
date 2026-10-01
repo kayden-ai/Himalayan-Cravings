@@ -1,41 +1,28 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import {findUserByUsername} from '../models/user-model.js';
-import 'dotenv/config';
+import {getUserByUsername} from '../models/user-model.js';
 
-const postLogin = async (req, res) => {
-  const user = await findUserByUsername(req.body.username);
+const login = async (req, res) => {
+  const {username, password} = req.body;
+  const user = await getUserByUsername(username);
+
   if (!user) {
-    return res.sendStatus(401);
+    return res.status(401).json({message: 'Invalid credentials'});
   }
 
-  const passwordMatch = await bcrypt.compare(req.body.password, user.password);
-  if (!passwordMatch) {
-    return res.sendStatus(401);
+  const match = await bcrypt.compare(password, user.password);
+
+  if (!match) {
+    return res.status(401).json({message: 'Invalid credentials'});
   }
 
-  const userWithNoPassword = {
-    user_id: user.user_id,
-    name: user.name,
-    username: user.username,
-    email: user.email,
-    role: user.role,
-  };
+  const token = jwt.sign(
+    {id: user.user_id, role: user.role},
+    'my_temporary_secret_key',
+    {expiresIn: '24h'}
+  );
 
-  const token = jwt.sign(userWithNoPassword, process.env.JWT_SECRET, {
-    expiresIn: '24h',
-  });
-
-  res.json({user: userWithNoPassword, token});
+  res.json({token, role: user.role});
 };
 
-const getMe = async (req, res) => {
-  console.log('getMe user:', res.locals.user);
-  if (res.locals.user) {
-    res.json({message: 'token ok', user: res.locals.user});
-  } else {
-    res.sendStatus(401);
-  }
-};
-
-export {postLogin, getMe};
+export {login};

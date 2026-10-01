@@ -1,32 +1,8 @@
 import express from 'express';
-import {body} from 'express-validator';
-import {
-  retrieveUsers,
-  retrieveUserById,
-  createUser,
-  updateUser,
-  deleteUser,
-} from '../controllers/user-controller.js';
-import {authenticateToken} from '../../middlewares/authentication.js';
-import {validationErrors} from '../../middlewares/error-handlers.js';
+import {postUser} from '../controllers/user-controller.js';
 
-const userRouter = express.Router();
+const router = express.Router();
 
-userRouter
-  .route('/')
-  .get(retrieveUsers)
-  .post(
-    body('email').trim().isEmail(),
-    body('username').trim().isLength({min: 3, max: 20}).isAlphanumeric(),
-    body('password').trim().isLength({min: 8}),
-    validationErrors,
-    createUser
-  );
+router.post('/', postUser);
 
-userRouter
-  .route('/:id')
-  .get(retrieveUserById)
-  .put(authenticateToken, updateUser)
-  .delete(authenticateToken, deleteUser);
-
-export default userRouter;
+export default router;
