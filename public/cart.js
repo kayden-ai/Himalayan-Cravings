@@ -1,20 +1,24 @@
+console.log('HELLO! The cart script is successfully connected!');
+
 let cart = JSON.parse(localStorage.getItem('himalayanCart')) || [];
 
-const addToCart = (itemName, price) => {
-  cart.push({name: itemName, price: price});
+function addToCart(itemName, itemPrice) {
+  cart.push({name: itemName, price: itemPrice});
   localStorage.setItem('himalayanCart', JSON.stringify(cart));
-  console.log(
-    `\({itemName} added! You have\){cart.length} items in your cart.`
-  );
-  updateCartUI();
-};
+  alert(`${itemName} was added to your cart!`);
+  console.log('Current Cart:', cart);
+}
 
-const updateCartUI = () => {
-  let total = 0;
-  cart.forEach((item) => {
-    total += item.price;
+const momoButton = document.getElementById('add-momo');
+if (momoButton) {
+  momoButton.addEventListener('click', () => {
+    addToCart('Mo:Mo', 10.0);
   });
-  console.log(`Current Total: €${total.toFixed(2)}`);
-};
+}
 
-updateCartUI();
+const curryButton = document.getElementById('add-curry');
+if (curryButton) {
+  curryButton.addEventListener('click', () => {
+    addToCart('Chicken Curry', 15.0);
+  });
+}

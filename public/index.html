@@ -1,31 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Himalayan Cravings</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
     <div class="navbar">
-        <h1 class="logo">Himalayan Cravings</h1>
-        <div class="links">
-            <a href="index.html">Home</a>
-            <a href="menu.html">Menu</a>
-            <a href="cart.html">Cart</a>
-            <a href="login.html">Login</a>
-        </div>
+      <h1 class="logo">Himalayan Cravings</h1>
+
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="cart.html">Cart</a>
+        <a href="login.html">Login</a>
+      </div>
     </div>
 
     <div class="hero">
-        <h2>Authentic Nepali Cuisine</h2>
-        <p>Taste the Himalayas in Helsinki.</p>
-        <a href="menu.html" class="button">Order Now</a>
+      <h2>Authentic Nepali Cuisine</h2>
+      <p>Taste the Himalayas in Helsinki.</p>
+      <a href="menu.html" class="button">Order Now</a>
     </div>
 
     <div class="about">
-        <h2>Our Story</h2>
-        <p>We serve fresh food made with traditional spices.</p>
+      <h2>Our Story</h2>
+      <p>We serve fresh food made with traditional spices.</p>
     </div>
-</body>
+
+    <div class="menu-container">
+      <h2>Find Your Way Here</h2>
+
+      <div class="menu-card">
+        <label for="start-location">Starting station or location</label>
+
+        <input
+          type="text"
+          id="start-location"
+          placeholder="Example: Leppävaara"
+        />
+
+        <button class="add-btn" id="route-btn">Get Transit Route</button>
+
+        <div id="route-result"></div>
+      </div>
+    </div>
+
+    <script src="transit.js"></script>
+  </body>
 </html>

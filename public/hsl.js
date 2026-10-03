@@ -24,7 +24,7 @@ const fetchTransitRoute = async () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/graphql',
-        'digitransit-subscription-key': 'YOUR_HSL_API_KEY_HERE',
+        'digitransit-subscription-key': '9c401874a8c245d788c3cf53af315880',
       },
       body: query,
     }
