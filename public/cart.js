@@ -1,24 +1,55 @@
-console.log('HELLO! The cart script is successfully connected!');
+console.log('Cart script initialized');
 
-let cart = JSON.parse(localStorage.getItem('himalayanCart')) || [];
+const cartItems = document.getElementById('cart-items');
+const cartSummary = document.getElementById('cart-summary');
+const cartTotal = document.getElementById('cart-total');
+const clearBtn = document.getElementById('clear-btn');
+const checkoutBtn = document.getElementById('checkout-btn');
 
-function addToCart(itemName, itemPrice) {
-  cart.push({name: itemName, price: itemPrice});
-  localStorage.setItem('himalayanCart', JSON.stringify(cart));
-  alert(`${itemName} was added to your cart!`);
-  console.log('Current Cart:', cart);
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+function displayCart() {
+  cartItems.innerHTML = '';
+  let total = 0;
+
+  if (cart.length === 0) {
+    cartItems.innerHTML = '<p>Your cart is empty.</p>';
+    cartSummary.style.display = 'none';
+  } else {
+    cartSummary.style.display = 'block';
+
+    cart.forEach((item) => {
+      const itemElement = document.createElement('div');
+      itemElement.classList.add('menu-card');
+
+      const itemPrice = parseFloat(item.price);
+      total += itemPrice * item.quantity;
+
+      itemElement.innerHTML = `
+        <h3>${item.name}</h3>
+        <p>Quantity: ${item.quantity}</p>
+        <p>Price: €${(itemPrice * item.quantity).toFixed(2)}</p>
+      `;
+
+      cartItems.appendChild(itemElement);
+    });
+
+    cartTotal.textContent = total.toFixed(2);
+  }
 }
 
-const momoButton = document.getElementById('add-momo');
-if (momoButton) {
-  momoButton.addEventListener('click', () => {
-    addToCart('Mo:Mo', 10.0);
+if (clearBtn) {
+  clearBtn.addEventListener('click', () => {
+    localStorage.removeItem('cart');
+    cart = [];
+    displayCart();
   });
 }
 
-const curryButton = document.getElementById('add-curry');
-if (curryButton) {
-  curryButton.addEventListener('click', () => {
-    addToCart('Chicken Curry', 15.0);
+if (checkoutBtn) {
+  checkoutBtn.addEventListener('click', () => {
+    alert('Connecting to order backend soon!');
   });
 }
+
+displayCart();
