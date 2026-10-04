@@ -1,33 +1,53 @@
-console.log('Transit routing script successfully connected!');
-
 const routeBtn = document.getElementById('route-btn');
-const startLocationInput = document.getElementById('start-location');
 const routeResult = document.getElementById('route-result');
 
-if (routeBtn) {
-  routeBtn.addEventListener('click', () => {
-    const startNode = startLocationInput.value.trim();
+const fetchTransitRoute = async () => {
+  routeResult.innerHTML = 'Fetching real HSL route...';
 
-    if (startNode === '') {
-      routeResult.innerHTML = '❌ Please enter a starting station.';
-      return;
+  const query = `{
+    plan(
+      from: {lat: 60.1704, lon: 24.9415}
+      to: {lat: 60.2239, lon: 24.7581}
+      numItineraries: 1
+    ) {
+      itineraries {
+        legs {
+          mode
+          startTime
+          endTime
+          from { name }
+          to { name }
+          route { shortName }
+        }
+      }
     }
+  }`;
 
-    routeResult.innerHTML = '⏳ Calculating transit routes...';
+  const response = await fetch(
+    'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/graphql',
+        'digitransit-subscription-key': '9c401874a8c245d788c3cf53af315880',
+      },
+      body: query,
+    }
+  );
 
-    setTimeout(() => {
-      const routes = [
-        `🚆 Take the commuter train from ${startNode} to Central Station, then walk 5 minutes.`,
-        `🚌 Take the local bus from ${startNode} directly to the City Center stop.`,
-        `🚋 Take the tram connection from ${startNode} heading downtown.`,
-      ];
+  const data = await response.json();
+  const legs = data.data.plan.itineraries[0].legs;
 
-      const randomRoute = routes[Math.floor(Math.random() * routes.length)];
+  routeResult.innerHTML = '';
 
-      routeResult.innerHTML = `
-                <p><strong>✅ Recommended Route:</strong></p>
-                <p>${randomRoute}</p>
-            `;
-    }, 800);
+  legs.forEach((leg) => {
+    const vehicle = leg.route ? leg.route.shortName : leg.mode;
+    const step = document.createElement('p');
+    step.textContent = `Take ${vehicle} from ${leg.from.name} to ${leg.to.name}`;
+    routeResult.appendChild(step);
   });
+};
+
+if (routeBtn) {
+  routeBtn.addEventListener('click', fetchTransitRoute);
 }
