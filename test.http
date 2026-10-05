@@ -1,3 +1,4 @@
+### Create Admin
 POST http://localhost:3000/users
 Content-Type: application/json
 
@@ -21,10 +22,12 @@ Content-Type: application/json
 ### Add Menu Item
 POST http://localhost:3000/menu
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzksInJvbGUiOiJhZG1pbiIsImlhdCI6MTc5MDg0NzIzMiwiZXhwIjoxNzkwOTMzNjMyfQ.cjWTfVKC_QS_ioLtIzNg5s5NqLsktBR7c_E1QXQdQco
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzksInJvbGUiOiJhZG1pbiIsImlhdCI6MTc5MDg1OTkyNywiZXhwIjoxNzkwOTQ2MzI3fQ.7IY9_cnhl6WJscxYOi4M9GlKV2qtC6JupRdbBnhP4L4
+
+{
     "name": "Mo:Mo",
-    "description": "Steamed dumplings filled with a savory mixture of vegetables or meat, served with a tangy dipping sauce.",
+    "description": "Steamed dumplings filled with meat or vegetables",
     "price": 10.00,
-    "category": "Snacks", 
-    "dietary_tags": "Both vegetarian and non-vegetarian options available, gluten-free, dairy-free"
+    "category": "Snacks",
+    "dietary_tags": "Both vegetarian and non-vegetarian"
 }
