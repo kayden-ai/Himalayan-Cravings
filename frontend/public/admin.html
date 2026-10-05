@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Add Dish</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <h1 class="logo">Himalayan Cravings</h1>
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="cart.html">Cart</a>
+        <a href="login.html" id="auth-link">Login</a>
+      </div>
+    </div>
+
+    <div>
+      <h2>Add New Dish</h2>
+      <form id="add-dish-form">
+        <input type="text" id="dish-name" placeholder="Dish Name" />
+        <input type="text" id="dish-desc" placeholder="Description" />
+        <input type="number" id="dish-price" placeholder="Price" />
+        <button type="submit">Add Dish</button>
+      </form>
+    </div>
+
+    <script src="ui.js"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>
