@@ -1,0 +1,5 @@
+DB_HOST=mysql.metropolia.fi
+DB_USER=ayushsha
+DB_PASSWORD=syanaluitel
+DB_NAME=ayushsha
+JWT_SECRET=gjwadhm7qweujasdy87euwhjfgvawji82u3yewgajg
