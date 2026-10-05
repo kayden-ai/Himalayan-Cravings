@@ -14,9 +14,9 @@ function displayCart() {
 
   if (cart.length === 0) {
     cartItems.innerHTML = '<p>Your cart is empty.</p>';
-    cartSummary.style.display = 'none';
+    if (cartSummary) cartSummary.style.display = 'none';
   } else {
-    cartSummary.style.display = 'block';
+    if (cartSummary) cartSummary.style.display = 'block';
 
     cart.forEach((item) => {
       const itemElement = document.createElement('div');
@@ -34,7 +34,7 @@ function displayCart() {
       cartItems.appendChild(itemElement);
     });
 
-    cartTotal.textContent = total.toFixed(2);
+    if (cartTotal) cartTotal.textContent = total.toFixed(2);
   }
 }
 
