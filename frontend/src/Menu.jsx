@@ -111,7 +111,7 @@ function Menu({cart, setCart, user}) {
     <div>
       <div className="hero-container">
         <img
-          src={`/${item.image_filename}`}
+          src={`/images/${item.image_filename}`}
           alt={item.name}
           className="menu-image"
         />
@@ -167,7 +167,7 @@ function Menu({cart, setCart, user}) {
         {menuItems.map((item) => (
           <div key={item.id} className="menu-card">
             <img
-              src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=400&auto=format&fit=crop"
+              src={`/${item.image_filename}`}
               alt={item.name}
               className="menu-image"
             />
