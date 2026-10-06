@@ -110,7 +110,11 @@ function Menu({cart, setCart, user}) {
   return (
     <div>
       <div className="hero-container">
-        <img src={heroImage} alt="Himalayan Cravings" />
+        <img
+          src={`/${item.image_filename}`}
+          alt={item.name}
+          className="menu-image"
+        />
       </div>
 
       {user && user.role === 'admin' && (
