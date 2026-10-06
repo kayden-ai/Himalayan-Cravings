@@ -9,7 +9,9 @@ function Orders() {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('http://localhost:3000/orders');
+      const response = await fetch(
+        'https://himalayan-cravings.onrender.com/orders'
+      );
       if (response.ok) {
         const data = await response.json();
         setOrders(data);
@@ -21,7 +23,7 @@ function Orders() {
 
   const updateStatus = async (id, newStatus) => {
     try {
-      await fetch(`http://localhost:3000/orders/${id}`, {
+      await fetch(`https://himalayan-cravings.onrender.com/orders/${id}`, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({status: newStatus}),

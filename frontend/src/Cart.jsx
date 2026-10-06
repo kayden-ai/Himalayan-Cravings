@@ -11,11 +11,14 @@ function Cart({cart, setCart}) {
     const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
 
     try {
-      const response = await fetch('http://localhost:3000/orders', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({items: cart, total_price: total}),
-      });
+      const response = await fetch(
+        'https://himalayan-cravings.onrender.com/orders',
+        {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({items: cart, total_price: total}),
+        }
+      );
 
       if (response.ok) {
         setCart([]);

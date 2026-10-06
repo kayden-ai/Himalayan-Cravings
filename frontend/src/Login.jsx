@@ -11,11 +11,14 @@ function Login({setUser, setActiveTab}) {
   const handleAuth = async () => {
     if (isRegistering) {
       try {
-        const response = await fetch('http://localhost:3000/users', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({name, username, email, password, role}),
-        });
+        const response = await fetch(
+          'https://himalayan-cravings.onrender.com/users',
+          {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name, username, email, password, role}),
+          }
+        );
 
         if (response.ok) {
           alert('Account created');
@@ -29,11 +32,14 @@ function Login({setUser, setActiveTab}) {
       }
     } else {
       try {
-        const response = await fetch('http://localhost:3000/auth/login', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({email, password}),
-        });
+        const response = await fetch(
+          'https://himalayan-cravings.onrender.com/auth/login',
+          {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email, password}),
+          }
+        );
 
         const data = await response.json();
 

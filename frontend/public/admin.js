@@ -15,7 +15,7 @@ addDishForm.addEventListener('submit', async (event) => {
     return;
   }
 
-  const response = await fetch('http://localhost:3000/menu', {
+  const response = await fetch('https://himalayan-cravings.onrender.com/menu', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -12,7 +12,9 @@ function Menu({cart, setCart, user}) {
   useEffect(() => {
     const fetchMenu = async () => {
       try {
-        const response = await fetch('http://localhost:3000/menu');
+        const response = await fetch(
+          'https://himalayan-cravings.onrender.com/menu'
+        );
         const data = await response.json();
         if (response.ok) {
           setMenuItems(data);
@@ -28,7 +30,9 @@ function Menu({cart, setCart, user}) {
     if (user && user.role === 'admin') {
       const fetchCurrentAnnounce = async () => {
         try {
-          const response = await fetch('http://localhost:3000/announcement');
+          const response = await fetch(
+            'https://himalayan-cravings.onrender.com/announcement'
+          );
           const data = await response.text();
           setAnnouncementInput(data);
         } catch (error) {
@@ -57,18 +61,23 @@ function Menu({cart, setCart, user}) {
   const handleAddMenuItem = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/menu', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify({name: newItemName, price: newItemPrice}),
-      });
+      const response = await fetch(
+        'https://himalayan-cravings.onrender.com/menu',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+          body: JSON.stringify({name: newItemName, price: newItemPrice}),
+        }
+      );
       if (response.ok) {
         setNewItemName('');
         setNewItemPrice('');
-        const updatedMenu = await fetch('http://localhost:3000/menu');
+        const updatedMenu = await fetch(
+          'https://himalayan-cravings.onrender.com/menu'
+        );
         setMenuItems(await updatedMenu.json());
       }
     } catch (error) {
@@ -78,14 +87,17 @@ function Menu({cart, setCart, user}) {
 
   const handleUpdateAnnouncement = async () => {
     try {
-      const response = await fetch('http://localhost:3000/announcement', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify({text: announcementInput}),
-      });
+      const response = await fetch(
+        'https://himalayan-cravings.onrender.com/announcement',
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+          body: JSON.stringify({text: announcementInput}),
+        }
+      );
       if (response.ok) {
         alert(t.adminUpdate + ' success!');
         window.location.reload();

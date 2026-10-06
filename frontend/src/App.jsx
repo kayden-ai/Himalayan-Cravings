@@ -24,7 +24,9 @@ function App() {
   useEffect(() => {
     const fetchAnnouncement = async () => {
       try {
-        const response = await fetch('http://localhost:3000/announcement');
+        const response = await fetch(
+          'https://himalayan-cravings.onrender.com/announcement'
+        );
         const data = await response.text();
         setAnnouncement(data);
       } catch (error) {
