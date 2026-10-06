@@ -110,11 +110,7 @@ function Menu({cart, setCart, user}) {
   return (
     <div>
       <div className="hero-container">
-        <img
-          src={`/images/${item.image_filename}`}
-          alt={item.name}
-          className="menu-image"
-        />
+        <img src={heroImage} alt="Himalayan Cravings" />
       </div>
 
       {user && user.role === 'admin' && (
@@ -167,7 +163,7 @@ function Menu({cart, setCart, user}) {
         {menuItems.map((item) => (
           <div key={item.id} className="menu-card">
             <img
-              src={`/${item.image_filename}`}
+              src={`/images/${item.image_filename}`}
               alt={item.name}
               className="menu-image"
             />
