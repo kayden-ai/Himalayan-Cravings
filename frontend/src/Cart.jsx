@@ -1,19 +1,61 @@
-function Cart({ cart, setCart }) {
+import {useState} from 'react';
+
+function Cart({cart, setCart}) {
+  const [orderMessage, setOrderMessage] = useState('');
+
   const clearCart = () => {
     setCart([]);
   };
 
+  const handleCheckout = async () => {
+    const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
+
+    try {
+      const response = await fetch('http://localhost:3000/orders', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({items: cart, total_price: total}),
+      });
+
+      if (response.ok) {
+        setCart([]);
+        setOrderMessage('Order sent to kitchen! Ready for pickup soon.');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div>
-      <h2>Your Cart</h2>
-      {cart.length === 0 ? <p>Your cart is empty.</p> : (
+    <div className="card">
+      <h2 className="page-header">Your Cart</h2>
+      {orderMessage && (
+        <p style={{color: '#28a745', fontWeight: 'bold', marginBottom: '15px'}}>
+          {orderMessage}
+        </p>
+      )}
+      {cart.length === 0 ? (
+        <p>Your cart is empty.</p>
+      ) : (
         <div>
           {cart.map((item, index) => (
-            <p key={index} style={{ borderBottom: '1px solid #eee', paddingBottom: '10px' }}>{item.name} - €{item.price.toFixed(2)}</p>
+            <div key={index} className="cart-item">
+              <span>{item.name}</span>
+              <span>€{Number(item.price).toFixed(2)}</span>
+            </div>
           ))}
-          <h3>Total: €{cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}</h3>
-          <button onClick={clearCart} style={{ background: '#dc3545', color: 'white', padding: '8px 12px', border: 'none', borderRadius: '3px', cursor: 'pointer', marginRight: '10px' }}>Clear Cart</button>
-          <button style={{ background: '#007bff', color: 'white', padding: '8px 12px', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>Checkout</button>
+          <h3 className="cart-total">
+            Total: €
+            {cart.reduce((sum, item) => sum + Number(item.price), 0).toFixed(2)}
+          </h3>
+          <div className="cart-actions">
+            <button onClick={clearCart} className="btn-danger">
+              Clear Cart
+            </button>
+            <button onClick={handleCheckout} className="btn-primary">
+              Checkout
+            </button>
+          </div>
         </div>
       )}
     </div>

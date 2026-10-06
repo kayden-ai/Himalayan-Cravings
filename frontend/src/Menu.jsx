@@ -1,50 +1,172 @@
-function Menu({cart, setCart}) {
-  const menuItems = [
-    {id: 1, name: 'Mo:Mo', price: 10.0},
-    {id: 2, name: 'Chicken Curry', price: 15.0},
-    {id: 3, name: 'Dal Bhat', price: 12.0},
-    {id: 4, name: 'Chow Mein', price: 10.0},
-  ];
+import {useState, useEffect} from 'react';
+import {useLanguage} from './App';
+import heroImage from './Himalayan Cravings_ A Taste of Nepal.png';
+
+function Menu({cart, setCart, user}) {
+  const [menuItems, setMenuItems] = useState([]);
+  const [newItemName, setNewItemName] = useState('');
+  const [newItemPrice, setNewItemPrice] = useState('');
+  const [announcementInput, setAnnouncementInput] = useState('');
+  const {t} = useLanguage();
+
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/menu');
+        const data = await response.json();
+        if (response.ok) {
+          setMenuItems(data);
+        } else {
+          setMenuItems([]);
+        }
+      } catch (error) {
+        setMenuItems([]);
+      }
+    };
+    fetchMenu();
+
+    if (user && user.role === 'admin') {
+      const fetchCurrentAnnounce = async () => {
+        try {
+          const response = await fetch('http://localhost:3000/announcement');
+          const data = await response.text();
+          setAnnouncementInput(data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchCurrentAnnounce();
+    }
+  }, [user]);
 
   const addToCart = (item) => {
-    setCart([...cart, item]);
-    alert(item.name + ' added to cart');
+    const existing = cart.find((cartItem) => cartItem.id === item.id);
+    if (existing) {
+      setCart(
+        cart.map((cartItem) =>
+          cartItem.id === item.id
+            ? {...cartItem, quantity: cartItem.quantity + 1}
+            : cartItem
+        )
+      );
+    } else {
+      setCart([...cart, {...item, quantity: 1}]);
+    }
+  };
+
+  const handleAddMenuItem = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:3000/menu', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({name: newItemName, price: newItemPrice}),
+      });
+      if (response.ok) {
+        setNewItemName('');
+        setNewItemPrice('');
+        const updatedMenu = await fetch('http://localhost:3000/menu');
+        setMenuItems(await updatedMenu.json());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdateAnnouncement = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/announcement', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({text: announcementInput}),
+      });
+      if (response.ok) {
+        alert(t.adminUpdate + ' success!');
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '15px',
-      }}
-    >
-      {menuItems.map((item) => (
-        <div
-          key={item.id}
-          style={{
-            border: '1px solid #ccc',
-            padding: '15px',
-            borderRadius: '5px',
-          }}
-        >
-          <h3>{item.name}</h3>
-          <p>€{item.price.toFixed(2)}</p>
-          <button
-            onClick={() => addToCart(item)}
-            style={{
-              background: '#28a745',
-              color: 'white',
-              padding: '8px 12px',
-              border: 'none',
-              borderRadius: '3px',
-              cursor: 'pointer',
-            }}
-          >
-            Add to Cart
-          </button>
+    <div>
+      <div className="hero-container">
+        <img src={heroImage} alt="Himalayan Cravings" />
+      </div>
+
+      {user && user.role === 'admin' && (
+        <div className="card admin-controls">
+          <h3>{t.adminAnnounce}</h3>
+          <div className="input-group">
+            <input
+              value={announcementInput}
+              onChange={(e) => setAnnouncementInput(e.target.value)}
+              className="input-field"
+              placeholder="Enter new banner text..."
+            />
+            <button onClick={handleUpdateAnnouncement} className="btn-primary">
+              {t.adminUpdate}
+            </button>
+          </div>
         </div>
-      ))}
+      )}
+
+      {user && user.role === 'admin' && (
+        <div className="card admin-controls">
+          <h3>Admin: Add New Menu Item</h3>
+          <form onSubmit={handleAddMenuItem} className="input-group">
+            <input
+              value={newItemName}
+              onChange={(e) => setNewItemName(e.target.value)}
+              placeholder="Item Name"
+              className="input-field"
+              required
+            />
+            <input
+              type="number"
+              step="0.01"
+              value={newItemPrice}
+              onChange={(e) => setNewItemPrice(e.target.value)}
+              placeholder="Price €"
+              className="input-field"
+              required
+            />
+            <button type="submit" className="btn-add">
+              Add Item
+            </button>
+          </form>
+        </div>
+      )}
+
+      <h2 className="page-header">{t.himalayan_menu_title}</h2>
+
+      <div className="menu-grid">
+        {menuItems.map((item) => (
+          <div key={item.id} className="menu-card">
+            <img
+              src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=400&auto=format&fit=crop"
+              alt={item.name}
+              className="menu-image"
+            />
+            <div className="menu-info">
+              <div>
+                <h3 className="item-name">{item.name}</h3>
+                <p className="item-price">{Number(item.price).toFixed(2)} €</p>
+              </div>
+              <button onClick={() => addToCart(item)} className="btn-cart-icon">
+                🛒
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

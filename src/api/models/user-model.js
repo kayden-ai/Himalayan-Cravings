@@ -11,13 +11,13 @@ const addUser = async (user) => {
     user.role,
   ];
   const [result] = await promisePool.execute(sql, params);
-  return {id: result.insertId};
+  return result;
 };
 
-const getUserByUsername = async (username) => {
-  const sql = 'SELECT * FROM wsk_users WHERE username = ?';
-  const [rows] = await promisePool.execute(sql, [username]);
+const getUserByEmail = async (email) => {
+  const sql = 'SELECT * FROM wsk_users WHERE email = ?';
+  const [rows] = await promisePool.execute(sql, [email]);
   return rows[0];
 };
 
-export {addUser, getUserByUsername};
+export {addUser, getUserByEmail};
