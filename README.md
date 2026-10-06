@@ -4,7 +4,7 @@ A full-stack restaurant ordering application with an admin dashboard and live pu
 
 ## Features
 
-- User and Admin authentication using JWT
+- User and Admin authentication using JWT.
 - Interactive menu with shopping cart and order placement
 - Admin dashboard to add, edit, and manage menu items
 - Live announcement banner with admin CMS capabilities
