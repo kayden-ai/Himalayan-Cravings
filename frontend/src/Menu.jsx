@@ -69,20 +69,12 @@ function Menu({cart, setCart, user}) {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-          body: JSON.stringify({
-            name: newItemName,
-            price: newItemPrice,
-            description: newItemDesc || 'Delicious Nepalese dish',
-            category: newItemCategory,
-            image_filename: newItemImage || 'aloo-gobi.jpg',
-          }),
+          body: JSON.stringify({name: newItemName, price: newItemPrice}),
         }
       );
       if (response.ok) {
         setNewItemName('');
         setNewItemPrice('');
-        setNewItemDesc('');
-        setNewItemImage('');
         const updatedMenu = await fetch(
           'https://himalayan-cravings.onrender.com/menu'
         );
@@ -141,15 +133,11 @@ function Menu({cart, setCart, user}) {
       {user && user.role === 'admin' && (
         <div className="card admin-controls">
           <h3>Admin: Add New Menu Item</h3>
-          <form
-            onSubmit={handleAddMenuItem}
-            className="input-group"
-            style={{display: 'flex', flexDirection: 'column', gap: '10px'}}
-          >
+          <form onSubmit={handleAddMenuItem} className="input-group">
             <input
               value={newItemName}
               onChange={(e) => setNewItemName(e.target.value)}
-              placeholder="Item Name (e.g. Momo)"
+              placeholder="Item Name"
               className="input-field"
               required
             />
@@ -161,29 +149,6 @@ function Menu({cart, setCart, user}) {
               placeholder="Price €"
               className="input-field"
               required
-            />
-            <input
-              value={newItemDesc}
-              onChange={(e) => setNewItemDesc(e.target.value)}
-              placeholder="Description"
-              className="input-field"
-            />
-            <select
-              value={newItemCategory}
-              onChange={(e) => setNewItemCategory(e.target.value)}
-              className="input-field"
-            >
-              <option value="Main">Main</option>
-              <option value="Starter">Starter</option>
-              <option value="Side">Side</option>
-              <option value="Dessert">Dessert</option>
-              <option value="Drink">Drink</option>
-            </select>
-            <input
-              value={newItemImage}
-              onChange={(e) => setNewItemImage(e.target.value)}
-              placeholder="Image Filename (e.g. momo.jpg)"
-              className="input-field"
             />
             <button type="submit" className="btn-add">
               Add Item
